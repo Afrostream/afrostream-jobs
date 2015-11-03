@@ -1,0 +1,10 @@
+{
+  "name":"afrostream-jobs",
+  "description":"app jobs",
+  "scripts":{},
+  "env":{
+    "NODE_ENV": "staging",
+    "TOKEN": "r4nd0mT0k3n"
+  },
+  "addons":[]
+}
