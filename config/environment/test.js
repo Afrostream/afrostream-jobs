@@ -4,7 +4,8 @@ module.exports = {
   redisUrl: undefined, // default configuration (local redis server)
   app: {
     middlewareAuth: true,
-    middlewareAuthToken: 'test'
+    middlewareAuthToken: 'test',
+    middlewareEnsureHttps: false
   },
   env: 'test'
 };

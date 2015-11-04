@@ -3,7 +3,7 @@
 var config = require('./config');
 
 var kue = require('kue')
-  , queue = kue.createQueue({redis: config.redis});
+  , queue = kue.createQueue({prefix: 'kue', redis: config.redis});
 
 // error handling: global try/catch with restart...
 queue.on('error', console.error.bind(console));

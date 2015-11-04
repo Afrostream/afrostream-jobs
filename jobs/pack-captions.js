@@ -1,5 +1,5 @@
 'use strict';
 
 module.exports = function (job, ctx, done) {
-  done();
+  setTimeout(function () { done(null, "success!"); }, 5000);
 };
