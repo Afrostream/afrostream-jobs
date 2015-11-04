@@ -3,8 +3,7 @@
 module.exports = {
   redisUrl: process.env.REDIS_URL,
   app: {
-    middlewareAuth: true,
-    middlewareAuthToken: process.env.AUTH_TOKEN,
-    middlewareEnsureHttps: true
+    basicAuth: {user: 'afrostream', password: 'r4nd0mT0k3n'},
+    middlewareEnsureHttps: false
   }
 };

@@ -2,6 +2,11 @@
   "name": "afrostream-jobs",
   "version": "1.0.0",
   "dependencies": {
+    "basic-auth-connect": {
+      "version": "1.0.0",
+      "from": "basic-auth-connect@*",
+      "resolved": "https://registry.npmjs.org/basic-auth-connect/-/basic-auth-connect-1.0.0.tgz"
+    },
     "better-assert": {
       "version": "1.0.2",
       "from": "better-assert@*",
