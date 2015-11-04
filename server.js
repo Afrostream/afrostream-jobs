@@ -8,7 +8,7 @@ var config = require('./config');
 // loading queue
 var queue = require('./queue');
 
-// registering jobs
+// register your job here
 queue.process('test', require('./jobs/test'));
 queue.process('pack captions', require('./jobs/pack-captions'));
 
@@ -26,5 +26,6 @@ var app = require('./app/');
 // mounting kue api on /api
 var kue = require('kue');
 app.use('/api', kue.app);
+
 // spawn server
 app.listen(config.port);

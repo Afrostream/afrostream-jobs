@@ -11,10 +11,19 @@ you can access the api in HTTPS only + header token auth in production environme
 
 # Create a Job
 
-create /jobs/{jobName}/index.js
-export the process function
-```js
-module.exports = {
+add your job inside /jobs
+export the "process" function (@see https://github.com/Automattic/kue#processing-jobs )
 
-}
+example: jobs/foobar.js
+
+```js
+module.exports = function(job, ctx, done){
+  setTimeout(done, 1000);
+});
+```
+
+register it inside server.js 
+
+```js
+queue.process('foobar', require('./jobs/foobar.js'));
 ```
