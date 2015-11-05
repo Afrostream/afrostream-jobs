@@ -27,3 +27,11 @@ register it inside server.js
 ```js
 queue.process('foobar', require('./jobs/foobar.js'));
 ```
+
+# Testing
+
+Example: update a job status
+
+```
+curl -X PUT --header "Content-Type: application/json" --header "Authorization: Basic ZGV2OmRldg==" --data '{"foo":42}' http://localhost:12000/api/jobs/14/
+```

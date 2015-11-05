@@ -1,33 +1,37 @@
 'use strict';
 
+var config = require('../config');
+
 var express = require('express')
   , app = express();
 
 var basicAuth = require('basic-auth-connect');
 
-var config = require('../config');
-
-app.use(function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Accept, Authorization');
-  if (req.method === 'OPTIONS') {
-    res.send();
-  } else {
-    next();
-  }
-});
-
-// assuming we will use https only.
+app.use(require('./middlewares/middleware-accesscontrol.js')());
+app.use(require('./middlewares/middleware-options.js')());
 app.use(basicAuth(config.app.basicAuth.user, config.app.basicAuth.password));
-
 if (config.app.middlewareEnsureHttps) {
-  app.use(function httpsOnly(req, res, next) {
-    if (req.get('X-Forwarded-Proto') !== 'https') {
-      console.error(req.url + ' was denied (non https)');
-      res.status(401).send('');
-    }
-  });
+  app.use(require('./middlewares/middleware-options.js')());
 }
+
+// loading queue
+var kue = require('../kue-queue.js').kue;
+var queue = require('../kue-queue.js').queue;
+
+// register your job here
+queue.process('test', require('../jobs/test'));
+queue.process('pack captions', require('../jobs/pack-captions'));
+
+// mounting kue api on /api
+app.use('/api', kue.app);
+
+// global error handler
+process.once('uncaughtException', function (err) {
+  console.error( 'Something bad happened: ', err, (err && err.stack) );
+  queue.shutdown(1000, function (err) {
+    console.error('Kue shutdown result: ', err || 'OK' );
+    process.exit(0);
+  });
+});
 
 module.exports = app;

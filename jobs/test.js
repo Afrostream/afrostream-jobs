@@ -1,6 +1,7 @@
 'use strict';
 
 module.exports = function (job, ctx, done) {
+  /*
   job.on('complete', function(result){
     console.log('Job completed with data ', result);
 
@@ -14,5 +15,6 @@ module.exports = function (job, ctx, done) {
     console.log('\r  job #' + job.id + ' ' + progress + '% complete with data ', data );
 
   });
+  */
   setTimeout(function () { done(null, "success!"); }, 1000);
 };

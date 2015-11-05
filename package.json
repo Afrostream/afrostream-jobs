@@ -4,9 +4,10 @@
   "description": "delayed jobs with retry (ex: email, encoding, packaging, ..)",
   "main": "server.js",
   "scripts": {
-    "test": ". ~/.nvm/nvm.sh && nvm use 4.2.1 && NODE_ENV=test && node_modules/.bin/mocha -R spec -b",
+    "test": "npm run jshint && . ~/.nvm/nvm.sh && nvm use 4.2.1 && NODE_ENV=test && node_modules/.bin/mocha -R spec -b test/integration/*.js",
     "start": "node server.js",
-    "dev": ". ~/.nvm/nvm.sh && nvm use 4.2.1 && node_modules/.bin/nodemon server.js"
+    "dev": ". ~/.nvm/nvm.sh && nvm use 4.2.1 && node_modules/.bin/nodemon server.js",
+    "jshint": "node_modules/.bin/jshint -c .jshintrc --exclude ./node_modules ."
   },
   "repository": {
     "type": "git",
@@ -21,13 +22,19 @@
   "dependencies": {
     "basic-auth-connect": "^1.0.0",
     "better-assert": "^1.0.2",
+    "body-parser": "^1.14.1",
     "express": "^4.13.3",
     "kue": "^0.9.6",
     "lodash": "^3.10.1"
   },
   "devDependencies": {
+    "btoa": "^1.1.2",
+    "jshint": "^2.8.0",
     "mocha": "^2.3.3",
-    "nodemon": "^1.8.1"
+    "nodemon": "^1.8.1",
+    "q": "^1.4.1",
+    "redis": "^2.3.0",
+    "supertest": "^1.1.0"
   },
   "engines": {
     "node": "4.2.1"
