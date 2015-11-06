@@ -1,18 +1,18 @@
 'use strict';
 
 module.exports = function (job, ctx) {
-  console.log('processing pack-captions');
+  console.log('processing test.delayed');
   job.subscribe(function () {
-    job.on('job process: remove', function () {
+    job.on('remove', function () {
       console.log('removed');
     });
-    job.on('job process: failed', function () {
+    job.on('failed', function () {
       console.log('failed');
     });
-    job.on('job process: failed attempt', function () {
+    job.on('failed attempt', function () {
       console.log('failed attempt');
     });
-    job.on('job process: complete', function () {
+    job.on('complete', function () {
       console.log('complete');
     });
   });

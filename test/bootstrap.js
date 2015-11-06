@@ -20,11 +20,7 @@ if (process.env.REDIS_URL) {
 global.btoa = require('btoa');
 global.rootRequire = function (name) { return require(__dirname + '/../' + (name[0] === '/' ? name.substr(1) : name)); };
 
-// monkeypatching q
 var q = require('q');
-q.Promise.prototype.toDone = function (done) {
-  return this.then(function () { done(); }, done);
-};
 
 //
 module.exports.getApp = function () {
@@ -32,8 +28,6 @@ module.exports.getApp = function () {
 };
 
 before(function removingAllKeys(done) {
-  console.log('before: removing all redis keys "kue*" !!!'+"\n");
-  //
   var redis = require("redis"),
     client = redis.createClient(config.redis.redis);
 
