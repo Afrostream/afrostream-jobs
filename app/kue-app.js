@@ -7,31 +7,26 @@ var delayed = require('./delayed.js');
 
 // patch
 kue.app.put('/job/:id/status', require('body-parser').json(), function (req, res, next) {
-  var error;
+  var jobId = req.params.id;
+
   switch (req.body.status) {
     case 'success':
+      delayed.success(jobId, function (err) {
+        if (err) { return next(err); }
+        res.set('Content-type', 'application/json');
+        return res.status(200).send('');
+      });
       break;
     case 'error':
-      error = new Error(req.body.message || 'unknown error');
+      delayed.error(jobId, req.body.message, function (err) {
+        if (err) { return next(err); }
+        res.set('Content-type', 'application/json');
+        return res.status(200).send('');
+      });
       break;
     default:
       return next(new Error('missing status'));
   }
-  kue.Job.get(req.params.id, function(err, job){
-    if (err) return next(new Error('unknown job'));
-    if (job.state() === 'active') {
-      var done = delayed.getCallback(job.id);
-      if (done) {
-        done(error);
-        res.set('Content-type', 'application/json');
-        return res.status(200).send('');
-      } else {
-        return next(new Error('internal server error - missing delayed callback'));
-      }
-    } else {
-      return next(new Error('job status was not active'));
-    }
-  });
 });
 
 // global error handler

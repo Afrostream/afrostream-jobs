@@ -406,7 +406,6 @@ describe('job "pack captions"', function () {
                 // after a short time, job should be active again.
                 setTimeout(function () {
                   kue.Job.get(jobId, function (err, job) {
-                    console.log('JOB STATE = '+job.state());
                     assert(job.state() === 'delayed'); // because of the backoff
                     done(err);
                   });
@@ -444,7 +443,7 @@ describe('job "pack captions"', function () {
                 assert(res.body.state === 'active');
                 done(err);
               });
-          }, 1100);
+          }, 1200);
         });
       });
     });
