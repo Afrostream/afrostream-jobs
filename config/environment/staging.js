@@ -7,6 +7,7 @@ module.exports = {
   },
   app: {
     basicAuth: {user: 'afrostream', password: 'r4nd0mT0k3n'},
-    middlewareEnsureHttps: false
+    middlewareEnsureHttps: false,
+    middlewareDumpPostData: true
   }
 };

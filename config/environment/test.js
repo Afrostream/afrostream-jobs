@@ -7,7 +7,8 @@ module.exports = {
   },
   app: {
     basicAuth: {user: 'test', password: 'test'},
-    middlewareEnsureHttps: false
+    middlewareEnsureHttps: false,
+    middlewareDumpPostData: false
   },
   env: 'test'
 };

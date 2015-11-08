@@ -6,7 +6,7 @@ var queue = require('../kue-queue.js').queue;
 var delayed = require('./delayed.js');
 
 // patch
-kue.app.put('/job/:id/status', require('body-parser').json(), function (req, res, next) {
+kue.app.put('/job/:id/status', function (req, res, next) {
   var jobId = req.params.id;
 
   switch (req.body.status) {
