@@ -1,19 +1,9 @@
 'use strict';
 
 module.exports = function (job, ctx) {
-  console.log('processing test.delayed');
-  job.subscribe(function () {
-    job.on('remove', function () {
-      console.log('removed');
-    });
-    job.on('failed', function () {
-      console.log('failed');
-    });
-    job.on('failed attempt', function () {
-      console.log('failed attempt');
-    });
-    job.on('complete', function () {
-      console.log('complete');
-    });
-  });
+  console.log('processing test delayed');
+  setTimeout(function () {
+    // simulating call to afrostream-packaging & answer after 50s
+    require('../app/delayed.js').success(job.id, function () {});
+  }, 50000);
 };

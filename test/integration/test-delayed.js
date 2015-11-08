@@ -44,7 +44,7 @@ var removeJob = function (jobId) {
     });
 };
 
-describe('job "pack captions"', function () {
+describe('job "test delayed"', function () {
   describe('create a job, update it from outside', function () {
     describe('create & update=success', function () {
       var jobId = null;
@@ -61,7 +61,7 @@ describe('job "pack captions"', function () {
             .set("Content-Type", "application/json")
             .set('Accept', 'application/json')
             .send({
-              "type": "pack captions",
+              "type": "test delayed",
               "data": {
                 "videoId": 4242,
                 "encodingId": 4242,
@@ -99,7 +99,7 @@ describe('job "pack captions"', function () {
             .expect('Content-Type', /json/)
             .expect(200, function (err, res) {
               assert(res.body.id === String(jobId));
-              assert(res.body.type === 'pack captions');
+              assert(res.body.type === 'test delayed');
               assert(res.body.state === 'active');
               done(err);
             });
@@ -129,7 +129,7 @@ describe('job "pack captions"', function () {
             .expect('Content-Type', /json/)
             .expect(200, function (err, res) {
               assert(res.body.id === String(jobId));
-              assert(res.body.type === 'pack captions');
+              assert(res.body.type === 'test delayed');
               assert(res.body.state === 'complete');
               done(err);
             });
@@ -156,7 +156,7 @@ describe('job "pack captions"', function () {
             .set("Content-Type", "application/json")
             .set('Accept', 'application/json')
             .send({
-              "type": "pack captions",
+              "type": "test delayed",
               "data": {
                 "videoId": 4242,
                 "encodingId": 4242,
@@ -194,7 +194,7 @@ describe('job "pack captions"', function () {
             .expect('Content-Type', /json/)
             .expect(200, function (err, res) {
               assert(res.body.id === String(jobId));
-              assert(res.body.type === 'pack captions');
+              assert(res.body.type === 'test delayed');
               assert(res.body.state === 'active');
               done(err);
             });
@@ -236,7 +236,7 @@ describe('job "pack captions"', function () {
             .expect('Content-Type', /json/)
             .expect(200, function (err, res) {
               assert(res.body.id === String(jobId));
-              assert(res.body.type === 'pack captions');
+              assert(res.body.type === 'test delayed');
               assert(res.body.state === 'active');
               done(err);
             });
@@ -278,7 +278,7 @@ describe('job "pack captions"', function () {
             .expect('Content-Type', /json/)
             .expect(200, function (err, res) {
               assert(res.body.id === String(jobId));
-              assert(res.body.type === 'pack captions');
+              assert(res.body.type === 'test delayed');
               assert(res.body.state === 'active');
               done(err);
             });
@@ -320,9 +320,47 @@ describe('job "pack captions"', function () {
             .expect('Content-Type', /json/)
             .expect(200, function (err, res) {
               assert(res.body.id === String(jobId));
-              assert(res.body.type === 'pack captions');
+              assert(res.body.type === 'test delayed');
               assert(res.body.state === 'failed');
               done(err);
+            });
+        });
+      });
+
+      describe('update: PUT /api/job/:id/status with status=error (4th time)', function () {
+        it('should answer 500 job status is not active', function (done) {
+          request(app)
+            .put('/api/job/' + jobId + '/status')
+            .set("Authorization", authorization)
+            .set("Content-Type", "application/json")
+            .set('Accept', 'application/json')
+            .send({
+              "status": "error"
+            })
+            .expect('Content-Type', /json/)
+            .expect(500, function (err, res) {
+              if (err) return done(err);
+              assert(res.body.error === 'Error: job status is not active');
+              done();
+            });
+        });
+      });
+
+      describe('update: PUT /api/job/:id/status with status=success (4th time)', function () {
+        it('should answer 500 job status is not active', function (done) {
+          request(app)
+            .put('/api/job/' + jobId + '/status')
+            .set("Authorization", authorization)
+            .set("Content-Type", "application/json")
+            .set('Accept', 'application/json')
+            .send({
+              "status": "success"
+            })
+            .expect('Content-Type', /json/)
+            .expect(500, function (err, res) {
+              if (err) return done(err);
+              assert(res.body.error === 'Error: job status is not active');
+              done();
             });
         });
       });
@@ -339,7 +377,7 @@ describe('job "pack captions"', function () {
             .set("Content-Type", "application/json")
             .set('Accept', 'application/json')
             .send({
-              "type": "pack captions",
+              "type": "test delayed",
               "data": {
                 "videoId": 4242,
                 "encodingId": 4242,
@@ -381,7 +419,7 @@ describe('job "pack captions"', function () {
             .expect('Content-Type', /json/)
             .expect(200, function (err, res) {
               assert(res.body.id === String(jobId));
-              assert(res.body.type === 'pack captions');
+              assert(res.body.type === 'test delayed');
               assert(res.body.state === 'active');
               done(err);
             });
@@ -423,7 +461,7 @@ describe('job "pack captions"', function () {
             .expect('Content-Type', /json/)
             .expect(200, function (err, res) {
               assert(res.body.id === String(jobId));
-              assert(res.body.type === 'pack captions');
+              assert(res.body.type === 'test delayed');
               assert(res.body.state === 'delayed');
               done(err);
             });
@@ -439,11 +477,34 @@ describe('job "pack captions"', function () {
               .expect('Content-Type', /json/)
               .expect(200, function (err, res) {
                 assert(res.body.id === String(jobId));
-                assert(res.body.type === 'pack captions');
+                assert(res.body.type === 'test delayed');
                 assert(res.body.state === 'active');
                 done(err);
               });
           }, 1200);
+        });
+
+        /**
+         * test-delayed is registered with a timeout of 2 sec.
+         * the job should fail (timeout)
+         */
+        it('should have changed the job status to failed after 3s because of process timeout (2s)', function (done) {
+          this.timeout(5000);
+          setTimeout(function () {
+            request(app)
+              .get('/api/job/' + jobId)
+              .set("Authorization", authorization)
+              .set("Content-Type", "application/json")
+              .set('Accept', 'application/json')
+              .expect('Content-Type', /json/)
+              .expect(200, function (err, res) {
+                assert(res.body.id === String(jobId));
+                assert(res.body.type === 'test delayed');
+                assert(res.body.state === 'failed');
+                assert(res.body.error === 'timeout');
+                done(err);
+              });
+          }, 3000);
         });
       });
     });

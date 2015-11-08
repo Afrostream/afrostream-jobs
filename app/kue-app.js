@@ -12,15 +12,15 @@ kue.app.put('/job/:id/status', require('body-parser').json(), function (req, res
   switch (req.body.status) {
     case 'success':
       delayed.success(jobId, function (err) {
-        if (err) { return next(err); }
         res.set('Content-type', 'application/json');
+        if (err) { return res.status(500).json({error:String(err)}); }
         return res.status(200).send('');
       });
       break;
     case 'error':
       delayed.error(jobId, req.body.message, function (err) {
-        if (err) { return next(err); }
         res.set('Content-type', 'application/json');
+        if (err) { return res.status(500).json({error:String(err)}); }
         return res.status(200).send('');
       });
       break;
