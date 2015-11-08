@@ -49,7 +49,7 @@ var error = function (jobId, message, callback) {
 };
 
 var process = function (process, timeout) {
-  timeout = timeout || 30000;
+  timeout = timeout || 60000;
   return function (job, ctx, done) {
     assert(!delayedCallbacks[job.id]); // once at a time.
     delayedCallbacks[job.id] = done;
