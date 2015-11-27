@@ -60,9 +60,9 @@ module.exports = function (job, ctx, done) {
   }).then(function (result) {
     var response = result[0], body = result[1];
     if (response.statusCode !== 200) {
-      throw "status="+response.statusCode+", body="+body;
+      throw "status="+response.statusCode+", body="+JSON.stringify(body);
     }
-    console.log('JOB: pack captions: video platform result = ' + body);
+    console.log('JOB: pack captions: video platform result = ' + JSON.stringify(body));
   }).then(
     function success() {
       console.log('JOB: pack captions: success');
