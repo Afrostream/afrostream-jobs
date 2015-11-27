@@ -43,19 +43,22 @@ module.exports = function (job, ctx, done) {
 
   //
   console.log('JOB: pack captions: requesting p-afsmsch-001.afrostream.tv/api/setSubtitles');
+  var body = {
+    sharedSecret: "12322bbc4e7a9d4fe2cf58c57b67f8f6",
+    encodingId: job.data.encodingId,
+    subtitles: job.data.captions.map(function (caption) {
+      return {
+        lang: caption.lang,
+        url: caption.src
+      };
+    })
+  };
+  console.log('JOB: pack captions: requesting body = ' + JSON.stringify(body));
+
   Q.nfcall(request, {
     method: 'POST',
     uri: 'http://p-afsmsch-001.afrostream.tv/api/setSubtitles', // FIXME: conf
-    body: {
-      sharedSecret: "12322bbc4e7a9d4fe2cf58c57b67f8f6",
-      encodingId: job.data.encodingId,
-      subtitles: job.data.captions.map(function (caption) {
-        return {
-          lang: caption.lang,
-          url: caption.src
-        };
-      })
-    },
+    body: body,
     json: true
   }).then(function (result) {
     var response = result[0], body = result[1];
