@@ -57,6 +57,12 @@ module.exports = function (job, ctx, done) {
       })
     },
     json: true
+  }).then(function (result) {
+    var response = result[0], body = result[1];
+    if (response.statusCode !== 200) {
+      throw "status="+response.statusCode+", body="+body;
+    }
+    console.log('JOB: pack captions: video platform result = ' + body);
   }).then(
     function success() {
       console.log('JOB: pack captions: success');
