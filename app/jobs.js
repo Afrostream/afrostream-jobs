@@ -10,4 +10,4 @@ var delayed = require('./delayed');
 queue.process('test normal', require('../jobs/test-normal.js'));
 queue.process('test delayed', delayed.process(require('../jobs/test-delayed.js'), 2000));
 queue.process('pack captions', require('../jobs/pack-captions.js'));
-
+queue.process('catchup-bet', require('../jobs/catchup-bet.js'));

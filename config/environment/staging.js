@@ -9,5 +9,9 @@ module.exports = {
     basicAuth: {user: 'afrostream', password: 'r4nd0mT0k3n'},
     middlewareEnsureHttps: false,
     middlewareDumpPostData: true
+  },
+  "afrostream-backend": {
+    scheme: "https",
+    authority: "afr-back-end-staging"
   }
 };

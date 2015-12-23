@@ -56,3 +56,9 @@ Example: update a job status
 ```
 curl -X PUT --header "Content-Type: application/json" --header "Authorization: Basic ZGV2OmRldg==" --data '{"foo":42}' http://localhost:12000/api/jobs/14/
 ```
+
+Exemple: create job catchup bet
+
+```
+curl -X POST --header "Content-Type: application/json" --header "Authorization: Basic ZGV2OmRldg==" --data '{"type":"catchup bet","data":{"xml":"http://localhost:47611/fake.xml","mamId":1316},"options":{"attempts":2,"backoff":{"delay":60000,"type":"fixed"}}}' http://localhost:12000/api/jobs/catchup-bet
+```

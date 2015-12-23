@@ -9,5 +9,9 @@ module.exports = {
     basicAuth: {user: 'dev', password: 'dev'},
     middlewareEnsureHttps: false,
     middlewareDumpPostData: true
+  },
+  "afrostream-backend": {
+    scheme: "http",
+    authority: "localhost:9000"
   }
 };
