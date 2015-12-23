@@ -12,6 +12,6 @@ module.exports = {
   },
   "afrostream-backend": {
     scheme: "https",
-    authority: "afr-back-end-staging"
+    authority: "afr-back-end-staging.herokuapp.com"
   }
 };
