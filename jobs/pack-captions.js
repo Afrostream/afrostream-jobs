@@ -41,6 +41,10 @@ module.exports = function (job, ctx, done) {
     return done(new Error('malformed input'));
   }
 
+  if (job.data.captions.length === 0) {
+    return done(new Error('no captions'));
+  }
+
   //
   console.log('JOB: pack captions: requesting p-afsmsch-001.afrostream.tv/api/setSubtitles');
   Q.nfcall(request, {
