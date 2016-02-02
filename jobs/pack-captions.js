@@ -73,7 +73,7 @@ module.exports = function (job, ctx, done) {
       done(null, 'success');
     },
     function error(err) {
-      console.error('JOB: pack captions: error', err);
+      console.error('JOB: pack captions: error ' + err, err, JSON.stringify(err, Object.getOwnPropertyNames(err)));
       done(err);
     }
   );
