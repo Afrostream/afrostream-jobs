@@ -69,7 +69,7 @@ module.exports = function (job, ctx, done) {
       done(null, 'success');
     },
     function error(err) {
-      console.error('JOB: catchup-bet: error ' + err, err, JSON.stringify(err, Object.getOwnPropertyNames(err)));
+      console.error('JOB: catchup-bet: error ' + err, err);
       done(err);
     }
   );

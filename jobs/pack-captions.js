@@ -64,7 +64,7 @@ module.exports = function (job, ctx, done) {
   }).then(function (result) {
     var response = result[0], body = result[1];
     if (response.statusCode !== 200) {
-      throw "status="+response.statusCode+", body="+body;
+      throw "status="+response.statusCode+", body="+JSON.stringify(body);
     }
     console.log('JOB: pack captions: video platform result = ' + body);
   }).then(
@@ -73,7 +73,7 @@ module.exports = function (job, ctx, done) {
       done(null, 'success');
     },
     function error(err) {
-      console.error('JOB: pack captions: error ' + err, err, JSON.stringify(err, Object.getOwnPropertyNames(err)));
+      console.error('JOB: pack captions: error ' + err, err);
       done(err);
     }
   );
