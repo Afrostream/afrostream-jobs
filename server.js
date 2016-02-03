@@ -7,4 +7,6 @@ var app = require('./app/');
 
 // spawn server
 var config = require('./config');
-app.listen(config.port);
+app.listen(config.port, function () {
+  console.log('listening on port ' + config.port);
+});
