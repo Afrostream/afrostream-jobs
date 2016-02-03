@@ -5,6 +5,8 @@ var queue = require('../kue-queue.js').queue;
 
 var delayed = require('./delayed.js');
 
+var Q = require('q');
+
 // patch
 kue.app.put('/job/:id/status', function (req, res, next) {
   var jobId = req.params.id;
@@ -27,6 +29,23 @@ kue.app.put('/job/:id/status', function (req, res, next) {
     default:
       return next(new Error('missing status'));
   }
+});
+
+// manual cleanup
+// http://afrostream-jobs.herokuapp.com/api/jobs/complete/cleanup?n=100
+kue.app.get('/jobs/complete/cleanup', function (req, res) {
+  var n = req.query.n || 50;
+
+  Q.ninvoke(kue.Job, 'rangeByState', 'complete', 0, n, 'asc')
+    .then(function (jobs) {
+      return Q.all(jobs.map(function (job) {
+        return Q.ninvoke(job, 'remove').then(function () { console.log('cleanup: removed ', job.id); });
+      })).then(function () { return jobs.length; });
+    })
+    .then(
+      function success(n) { res.json({ n: n }); }
+    , function error(err) { res.status(500).json({error:err}); }
+    );
 });
 
 // global error handler
