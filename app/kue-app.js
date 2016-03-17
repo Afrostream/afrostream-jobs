@@ -31,6 +31,21 @@ kue.app.put('/job/:id/status', function (req, res, next) {
   }
 });
 
+kue.app.get('/job/:id/retry', function (req, res, next) {
+  var jobId = req.params.id;
+
+  Q.ninvoke(kue.Job, 'get', jobId)
+    .then(
+      function (job) {
+        return Q.ninvoke(job.state('inactive'), 'save');
+      }
+    )
+    .then(
+      res.json.bind(res),
+      next
+    );
+});
+
 // manual cleanup
 // http://afrostream-jobs.herokuapp.com/api/jobs/complete/cleanup?n=100
 kue.app.get('/jobs/complete/cleanup', function (req, res) {
