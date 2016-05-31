@@ -48,10 +48,11 @@ kue.app.get('/job/:id/retry', function (req, res, next) {
 
 // manual cleanup
 // http://afrostream-jobs.herokuapp.com/api/jobs/complete/cleanup?n=100
-kue.app.get('/jobs/complete/cleanup', function (req, res) {
+// http://afrostream-jobs.herokuapp.com/api/jobs/failed/cleanup?n=100
+kue.app.get('/jobs/:status/cleanup', function (req, res) {
   var n = req.query.n || 50;
 
-  Q.ninvoke(kue.Job, 'rangeByState', 'complete', 0, n, 'asc')
+  Q.ninvoke(kue.Job, 'rangeByState', req.params.status, 0, n, 'asc')
     .then(function (jobs) {
       return Q.all(jobs.map(function (job) {
         return Q.ninvoke(job, 'remove').then(function () { console.log('cleanup: removed ', job.id); });
