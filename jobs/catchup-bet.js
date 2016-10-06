@@ -7,12 +7,12 @@ var Q = require('q');
 var config = require('../config');
 
 /**
- * This job will wait for mamId to be ready.
+ * This job will wait for pfContentId to be ready.
  *
  * INPUT job.data =
  * {
  *   "xml": "http://blabla.com/foo/bar/niania",
- *   "mamId": "1316",
+ *   "pfContentId": "1316",
  *   "captions": [ "http://file1", "http://file2", ... ]
  * }
  *
@@ -20,7 +20,7 @@ var config = require('../config');
  * curl -X POST -d '{
  *   "sharedSecret": "62b8557f248035275f6f8219fed7e9703d59509c"
  *   "xml": "http://blabla.com/foo/bar/niania",
- *   "mamId": "1316",
+ *   "pfContentId": "1316",
  *   "captions": [ "http://file1", "http://file2", ... ]
  * }' https://legacy-api.afrostream.tv/api/catchup/bet
  */
@@ -35,7 +35,7 @@ module.exports = function (job, ctx, done) {
   log('JOB: catchup-bet: input job.data', JSON.stringify(job.data));
 
   // ensure backend-data is meaning full.
-  if (!job.data || !job.data.xml || !job.data.mamId) {
+  if (!job.data || !job.data.xml || !job.data.pfContentId) {
     return done(new Error('malformed input'));
   }
 
@@ -46,7 +46,7 @@ module.exports = function (job, ctx, done) {
   var body = {
     sharedSecret: "62b8557f248035275f6f8219fed7e9703d59509c",
     xml: job.data.xml,
-    mamId: job.data.mamId,
+    pfContentId: job.data.pfContentId,
     captions: job.data.captions || []
   };
   log('JOB: catchup-bet: requesting body = ' + JSON.stringify(body));
